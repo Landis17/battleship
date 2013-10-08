@@ -42,28 +42,29 @@
     <script>
         jQuery(function($) {
 
-            processUserName();
+            init();
 
-            var game = new SeaBattle.Game($('#human_field'), $('#bot_field'), $('#game_status'), 10, 10);
+            var game = new SeaBattle.Game( $('#human_field'), $('#bot_field'), $('#game_status'), 10, 10 );
+
             game.start();
 
-            function processUserName() {
+            function init() {
                 $('#game_container').hide();
 
                 $('#username_box_tb').focus();
 
-                $('#username_box_btn').click(function() {
-                    onUserNameEntered()
+                $('#username_box_btn').on('click', function() {
+                    onUserName()
                 });
 
-                $('#username_box_tb').keydown( function(event) {
-                    if (event.keyCode == 13) {   // 13 = Enter
-                        onUserNameEntered();
-                        event.preventDefault();
+                $('#username_box_tb').on('keydown', function(e) {
+                    if (e.keyCode == 13) {
+                        onUserName();
+                        e.preventDefault();
                     }
                 })
 
-                function onUserNameEntered() {
+                function onUserName() {
                     var userName = $('#username_box_tb').val();
 
                     var userNameRegExp = /^[A-Za-zА-ЯЁа-яё ]+$/ //Только буквы
