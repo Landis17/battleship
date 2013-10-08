@@ -1,3 +1,3 @@
 BattleShip
 ======
-Simple Javascript game
+Simple BattleShip game.
