@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Морской бой</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <link rel="stylesheet" type="text/css" href="style/layout.css" />
+
+    <script src="js/external/jquery-1.10.2.min.js"></script>
+
+    <script src="js/game.js"></script>
+    <script src="js/models.js"></script>
+
+</head>
+
+<body>
+
+    <div id="game_container">
+        <div id="header">
+            <span id="user_info">Имя игрока: </span>
+        </div>
+
+        <div id="arena_container">
+            <div id="game_status"></div>
+            <div id="bot_field" class="field_container">Поле компьютера</div>
+            <div id="human_field" class="field_container">Ваше поле</div>
+        </div>
+
+    </div>
+
+    <div id="input_username_box">
+        <div>Введите имя игрока</div>
+        <form>
+            <input type="text" id="username_box_tb"/>
+            <input type="button" id="username_box_btn" value="Начать игру"/>
+        </form>
+    </div>
+
+    <div id="backgroundPopup"></div>
+
+    <script>
+        jQuery(function($) {
+
+            processUserName();
+
+            var game = new SeaBattle.Game($('#human_field'), $('#bot_field'), $('#game_status'), 10, 10);
+            game.start();
+
+            function processUserName() {
+                $('#game_container').hide();
+
+                $('#username_box_tb').focus();
+
+                $('#username_box_btn').click(function() {
+                    onUserNameEntered()
+                });
+
+                $('#username_box_tb').keydown( function(event) {
+                    if (event.keyCode == 13) {   // 13 = Enter
+                        onUserNameEntered();
+                        event.preventDefault();
+                    }
+                })
+
+                function onUserNameEntered() {
+                    var userName = $('#username_box_tb').val();
+
+                    var userNameRegExp = /^[A-Za-zА-ЯЁа-яё ]+$/ //Только буквы
+                    if (!userNameRegExp.test(userName)) {
+                        alert("Имя пользователя не может быть пустым и должно состоять только из букв!");
+                        $('#username_box_tb').val('');
+                        return;
+                    }
+                    $('#user_info').append(userName);
+
+                    $('#input_username_box').hide(500);
+                    $('#game_container').show(500);
+                }
+            }
+        })
+
+    </script>
+
+
+</body>
+</html>

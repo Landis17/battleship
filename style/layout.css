@@ -1,0 +1,60 @@
+
+body {
+    color: #262825;
+}
+
+#header {
+    width: 100%;
+    height: 3em;
+
+}
+
+#user_info {
+    font-size: 1.3em;
+}
+
+#arena_container {
+    font-size: 1.1em;
+    width: 50%;
+    margin: 0 auto;
+}
+
+#game_status {
+    text-align: center;
+}
+
+.field_container {
+    margin: 0 auto;
+    float: right;
+    padding: 2em;
+}
+
+#input_username_box {
+    display: table;
+    margin: 0 auto;
+    border: inset #9a9ca3;
+    padding: 1em;
+}
+
+.field td {
+    background-size: contain;
+    border: solid black 1px;
+    height: 1em;
+    width: 1em;
+}
+
+.fired_cell {
+    background-color: #9a9ca3;
+}
+
+.live_ship {
+    background-color: #44b827;
+}
+
+.damaged_ship {
+    background-color: #b89b00;
+}
+
+.died_ship {
+    background-color: #b82100;
+}
