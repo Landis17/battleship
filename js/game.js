@@ -14,7 +14,7 @@ window.SeaBattle = SeaBattle; // делаем пространство имен 
  * @param arenaHeight высота поля
  * @constructor
  */
-SeaBattle.Game = function(humanContainer, botContainer, gameStatusContainer, arenaWidth, arenaHeight) {
+SeaBattle.Game = function( humanContainer, botContainer, gameStatusContainer, arenaWidth, arenaHeight ) {
 
     this.humanContainer = humanContainer;
     this.botContainer = botContainer;
@@ -26,13 +26,13 @@ SeaBattle.Game = function(humanContainer, botContainer, gameStatusContainer, are
      * Модель поля человека
      * @type {SeaBattle.Field}
      */
-    this.humanField = null;
+    this.humanField;
 
     /**
      * Модель поля компьютера
      * @type {SeaBattle.Field}
      */
-    this.botField = null;
+    this.botField;
 
     /**
      * Позиции на поле по которым стреляем компьютер
@@ -59,16 +59,16 @@ SeaBattle.Game.prototype = {
      * Инициализирует массив позиций по которым будет стрелять компьютер
      */
     initBotShootingPositions: function() {
-        for (var i = 0; i < this.fieldWidth; i++) {
-            for (var j = 0; j < this.fieldHeight; j++) {
-                this.botShootingPositions.push(new SeaBattle.Position(i, j));
+        for ( var i = 0; i < this.fieldWidth; i++ ) {
+            for ( var j = 0; j < this.fieldHeight; j++ ) {
+                this.botShootingPositions.push( new SeaBattle.Position(i, j) );
             }
         }
         // перемешиваем
-        shuffleArray(this.botShootingPositions);
+        shuffleArray( this.botShootingPositions) ;
 
         function shuffleArray(o) { // взято отсюда: http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array-in-javascript
-            for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+            for( var j, x, i = o.length; i; j = Math.floor( Math.random() * i ), x = o[--i], o[i] = o[j], o[j] = x );
             return o;
         }
     },
@@ -78,7 +78,7 @@ SeaBattle.Game.prototype = {
      */
     initBotField: function() {
 
-        var table = this.createTable(this.botContainer);
+        var table = this.createTable( this.botContainer );
 
         var self = this;
 
@@ -89,31 +89,31 @@ SeaBattle.Game.prototype = {
         }
 
         var onShipDamagedHandler = function(pos) {
-            self.markShipDamaged(table, pos);
+            self.markShipDamaged( table, pos );
         }
 
         var onShipDiedHandler = function(shipPositions) {
-            self.markShipDied(table, shipPositions);
+            self.markShipDied( table, shipPositions );
         }
 
         var onBotLostHandler = function() {
             $(self.gameStatusContainer).text('Игра окончена. Вы победили');
-            alert("Вы победили. Игра начнется заново. ");
+            alert( "Вы победили. Игра начнется заново. " );
             location.reload();
         };
 
         this.botField = new SeaBattle.Field (
-            onShotMissedHandler,
-            onShipDamagedHandler,
-            onShipDiedHandler,
-            onBotLostHandler,
-            this.fieldHeight,
-            this.fieldWidth);
+              onShotMissedHandler
+            , onShipDamagedHandler
+            , onShipDiedHandler
+            , onBotLostHandler
+            , this.fieldHeight
+            , this.fieldWidth );
 
         table.on('click', 'td', function() {
             var xCoordinate = this.cellIndex;
             var yCoordinate = this.parentNode.rowIndex;
-            self.botField.makeShot(new SeaBattle.Position(xCoordinate, yCoordinate));
+            self.botField.makeShot( new SeaBattle.Position(xCoordinate, yCoordinate) );
         });
     },
 
@@ -132,33 +132,33 @@ SeaBattle.Game.prototype = {
         }
 
         var onShipDamagedHandler = function(pos) {
-            self.markShipDamaged(table, pos);
+            self.markShipDamaged( table, pos );
             self.botAttack();
         }
 
         var onShipDiedHandler = function(shipPositions) {
-            self.markShipDied(table, shipPositions);
+            self.markShipDied( table, shipPositions );
             self.botAttack();
         }
 
         var onHumanLostHandler = function() {
             $(self.gameStatusContainer).text('Игра окончена. Вы проиграли.');
-            alert("Вы проиграли. Игра начнется заново.");
+            alert( "Вы проиграли. Игра начнется заново." );
             location.reload();
         };
 
-        this.humanField = new SeaBattle.Field(
-            onShotMissedHandler,
-            onShipDamagedHandler,
-            onShipDiedHandler,
-            onHumanLostHandler,
-            this.fieldHeight,
-            this.fieldWidth);
+        this.humanField = new SeaBattle.Field (
+              onShotMissedHandler
+            , onShipDamagedHandler
+            , onShipDiedHandler
+            , onHumanLostHandler
+            , this.fieldHeight
+            , this.fieldWidth );
 
         // отображаем все корабли человека
-        for (var i = 0; i < this.humanField.ships.length; i++) {
+        for ( var i = 0; i < this.humanField.ships.length; i++ ) {
             var shipPositions = this.humanField.ships[i].getPositions();
-            for (var j = 0; j < shipPositions.length; j++) {
+            for ( var j = 0; j < shipPositions.length; j++ ) {
                 var pos = shipPositions[j];
                 table.find('tr').eq(pos.y).find('td').eq(pos.x).addClass('live_ship');
             }
@@ -173,9 +173,9 @@ SeaBattle.Game.prototype = {
     createTable: function(container) {
         var table = $('<table></table>').addClass('field');
 
-        for(var i = 0; i < this.fieldWidth; i++) {
+        for( var i = 0; i < this.fieldWidth; i++ ) {
             var tr = $('<tr></tr>').appendTo(table);
-            for (var j = 0; j < this.fieldHeight; j++) {
+            for ( var j = 0; j < this.fieldHeight; j++ ) {
                 $('<td></td>').appendTo(tr);
             }
         }
@@ -214,7 +214,7 @@ SeaBattle.Game.prototype = {
      * @param shipPositions позиции на которых был установлен корабль
      */
     markShipDied: function(table, shipPositions) {
-        for (var i = 0; i < shipPositions.length; i++) {
+        for ( var i = 0; i < shipPositions.length; i++ ) {
             table.find('tr').eq(shipPositions[i].y).find('td').eq(shipPositions[i].x).removeClass('fired_cell').addClass('died_ship');
         }
     }

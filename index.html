@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" type="text/css" href="style/layout.css" />
 
-    <script src="js/external/jquery-1.10.2.min.js"></script>
+    <script src="lib/jquery-1.10.2.min.js"></script>
 
     <script src="js/game.js"></script>
     <script src="js/models.js"></script>
@@ -67,12 +67,11 @@
                 function onUserName() {
                     var userName = $('#username_box_tb').val();
 
-                    var userNameRegExp = /^[A-Za-zА-ЯЁа-яё ]+$/ //Только буквы
-                    if (!userNameRegExp.test(userName)) {
-                        alert("Имя пользователя не может быть пустым и должно состоять только из букв!");
-                        $('#username_box_tb').val('');
+                    if ( !$('#username_box_tb').val() ) {
+                        alert("Введите имя!");
                         return;
                     }
+
                     $('#user_info').append(userName);
 
                     $('#input_username_box').hide(500);
