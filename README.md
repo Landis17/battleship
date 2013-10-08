@@ -1,4 +1,3 @@
-canvas
+BattleShip
 ======
-
-Canvas game!
+Simple Javascript game
