@@ -43,50 +43,50 @@
             <input type="text" class="username"/>
             <button type="text" class="username_btn">Начать игру</button>
         </form>
-    <div>
+    </div>
+</div>
+<div class="footer">
+    (с) Морской бой 
 </div>
 
-    <script>
-        jQuery(function($) {
+<script>
+jQuery(function($) {
 
-            init();
+    init();
 
-            var game = new BattleShip.Game( $('.human'), $('.bot'), $('.game_status'), 10, 10 );
-            game.start();
+    var game = new BattleShip.Game( $('.human'), $('.bot'), $('.game_status'), 10, 10 );
+    game.start();
 
-            function init() {
-                $('.game').hide();
-                $('.username').focus();
+    function init() {
+        $('.game').hide();
+        $('.username').focus();
 
-                $('.username_btn').on('click', function(e) {
-                    onUserName();
-                    e.preventDefault();
-                });
+        $('.username_btn').on('click', function(e) {
+            onUserName();
+            e.preventDefault();
+        });
 
-                $('.username').on('keydown', function(e) {
-                    if (e.keyCode == 13) {
-                        onUserName();
-                        e.preventDefault();
-                    }
-                });
-
-                function onUserName() {
-                    var userName = $('.username').val();
-
-                    if ( !$('.username').val() ) {
-                        alert("Введите имя!");
-                        return;
-                    }
-
-                    $('.user_info').append(userName);
-                    $('.greetings').hide(500);
-                    $('.game').show(500);
-                }
+        $('.username').on('keydown', function(e) {
+            if (e.keyCode == 13) {
+                onUserName();
+                e.preventDefault();
             }
         });
 
-    </script>
+        function onUserName() {
+            var userName = $('.username').val();
 
+            if ( !$('.username').val() ) {
+                alert("Введите имя!");
+                return;
+            }
 
+            $('.user_info').append(userName);
+            $('.greetings').hide(500);
+            $('.game').show(500);
+        }
+    }
+});
+</script>
 </body>
 </html>
