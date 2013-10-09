@@ -9,9 +9,13 @@
 
     <script src="lib/jquery-1.10.2.min.js"></script>
 
-    <script src="js/game.js"></script>
-    <script src="js/models.js"></script>
-
+    <script src="js/battleship.js"></script>
+    <script src="js/battleship-game.js"></script>
+    <script src="js/battleship-position.js"></script>
+    <script src="js/battleship-cell.js"></script>
+    <script src="js/battleship-shipsinfo.js"></script>
+    <script src="js/battleship-shotstatus.js"></script>
+    <script src="js/battleship-field.js"></script>
 </head>
 
 <body>
@@ -47,13 +51,11 @@
 
             init();
 
-            var game = new SeaBattle.Game( $('.human'), $('.bot'), $('.game_status'), 10, 10 );
-
+            var game = new BattleShip.Game( $('.human'), $('.bot'), $('.game_status'), 10, 10 );
             game.start();
 
             function init() {
                 $('.game').hide();
-
                 $('.username').focus();
 
                 $('.username_btn').on('click', function(e) {
@@ -77,7 +79,6 @@
                     }
 
                     $('.user_info').append(userName);
-
                     $('.greetings').hide(500);
                     $('.game').show(500);
                 }

@@ -1,10 +1,4 @@
 'use strict';
-
-
-var SeaBattle = {}; // инициализируем пространство имен
-
-window.SeaBattle = SeaBattle; // делаем пространство имен доступным из вне
-
 /**
  * Объект игры Морской бой
  * @param {jQuery obj} humanContainer Контейнер для отображения поля человека
@@ -13,7 +7,7 @@ window.SeaBattle = SeaBattle; // делаем пространство имен 
  * @param {Number} arenaWidth ширина поля
  * @param {Number} arenaHeight высота поля
  */
-SeaBattle.Game = function( humanContainer, botContainer, gameStatusContainer, arenaWidth, arenaHeight ) {
+BattleShip.Game = function( humanContainer, botContainer, gameStatusContainer, arenaWidth, arenaHeight ) {
 
     this.humanContainer = humanContainer;
     this.botContainer = botContainer;
@@ -23,13 +17,13 @@ SeaBattle.Game = function( humanContainer, botContainer, gameStatusContainer, ar
 
     /**
      * Поле человека
-     * @type {SeaBattle.Field}
+     * @type {BattleShip.Field}
      */
     this.humanField;
 
     /**
      * Поле компьютера
-     * @type {SeaBattle.Field}
+     * @type {BattleShip.Field}
      */
     this.botField;
 
@@ -44,7 +38,7 @@ SeaBattle.Game = function( humanContainer, botContainer, gameStatusContainer, ar
 /**
  * Методы для объекта игры
  */
-SeaBattle.Game.prototype = {
+BattleShip.Game.prototype = {
 
     /**
      * Старт
@@ -63,7 +57,7 @@ SeaBattle.Game.prototype = {
     initBotShootingPositions: function() {
         for ( var i = 0; i < this.fieldWidth; i++ ) {
             for ( var j = 0; j < this.fieldHeight; j++ ) {
-                this.botShootingPositions.push( new SeaBattle.Position( i, j ) );
+                this.botShootingPositions.push( new BattleShip.Position( i, j ) );
             }
         }
         shuffleArray( this.botShootingPositions ) ;
@@ -105,7 +99,7 @@ SeaBattle.Game.prototype = {
             location.reload();
         };
 
-        this.botField = new SeaBattle.Field (
+        this.botField = new BattleShip.Field (
               onShotMissedHandler
             , onShipDamagedHandler
             , onShipDiedHandler
@@ -116,7 +110,7 @@ SeaBattle.Game.prototype = {
         table.on('click', 'td', function() {
             var xCoordinate = this.cellIndex;
             var yCoordinate = this.parentNode.rowIndex;
-            self.botField.makeShot( new SeaBattle.Position(xCoordinate, yCoordinate) );
+            self.botField.makeShot( new BattleShip.Position(xCoordinate, yCoordinate) );
         });
     },
 
@@ -150,7 +144,7 @@ SeaBattle.Game.prototype = {
             location.reload();
         };
 
-        this.humanField = new SeaBattle.Field (
+        this.humanField = new BattleShip.Field (
               onShotMissedHandler
             , onShipDamagedHandler
             , onShipDiedHandler
@@ -205,7 +199,7 @@ SeaBattle.Game.prototype = {
     /**
      * Закрашивает клетку раненого корабля
      * @param {jQuery obj} table
-     * @param {SeaBattle.Position} pos позиция клетки
+     * @param {BattleShip.Position} pos позиция клетки
      */
     markShipDamaged: function(table, pos) {
         table.find('tr').eq(pos.y).find('td').eq(pos.x).removeClass('fired_cell').addClass('damaged_ship');
@@ -214,7 +208,7 @@ SeaBattle.Game.prototype = {
     /**
      * Закрашивает клетки потопленного корабля
      * @param {jQuery obj} table элемент таблицы
-     * @param {SeaBattle.Position} shipPositions позиции на которых был установлен корабль
+     * @param {BattleShip.Position} shipPositions позиции на которых был установлен корабль
      */
     markShipDied: function(table, shipPositions) {
         for ( var i = 0; i < shipPositions.length; i++ ) {

@@ -1,94 +1,15 @@
 'use strict';
-
-
-/**
- * Позиция на поле
- * @param x позиция по оси Х
- * @param y позиция по оси У
- * @constructor
- */
-SeaBattle.Position = function(x, y) {
-    this.x = x;
-    this.y = y;
-}
-
-/**
- * Ячейка в поле
- * @param pos позиция ячейки
- * @param ship корабль, который установлен на ячейку
- * @constructor
- */
-SeaBattle.Cell = function(pos, ship) {
-    this.pos = pos;
-    this.ship = ship;
-
-    /**
-     * Был ли произведен выстрел по ячейке
-     * @type {boolean}
-     */
-    this.isFired = false;
-}
-
-/**
- * Информация о караблях (длина корабля / количество кораблей)
- */
-SeaBattle.ShipsInfo = {
-
-    /**
-     * Четырехпалубник
-     */
-    FOUR_DECKER : {LENGTH: 4, COUNT: 1},
-
-    /**
-     * Трехпалубник
-     */
-    THREE_DECKER : {LENGTH: 3, COUNT: 2},
-
-    /**
-     * Двухпалубник
-     */
-    TWO_DECKER : {LENGTH: 2, COUNT: 3},
-
-    /**
-     * Однопалубник
-     */
-    SINGLE_DECKER : {LENGTH: 1, COUNT: 4}
-}
-
-
-/**
- * Статус выстрела
- * @type {{DAMAGED: string, KILLED: string}}
- */
-SeaBattle.ShotStatus = {
-    /**
-     * Выстрел нанес урон кораблю
-     */
-    DAMAGED : "damaged",
-
-    /**
-     * Выстрел уничтожил корабль
-     */
-    KILLED : "killed",
-
-
-    /**
-     * Неточный выстрел
-     */
-    MISSED : "MISSED"
-}
-
 /**
  * Объект корабля
  */
-SeaBattle.Ship = function() {
+BattleShip.Ship = function() {
     this.cellWidgets = [];
 }
 
 /**
  * Методы объекта корябля
  */
-SeaBattle.Ship.prototype = {
+BattleShip.Ship.prototype = {
 
     /**
      * Метод возвращает true если корабль потоплен, иначе false
@@ -107,7 +28,7 @@ SeaBattle.Ship.prototype = {
 
     /**
      * Возвращает позиции ячеек на которых установлен корабль
-     * @return {SeaBattle.Position}
+     * @return {BattleShip.Position}
      */
     getPositions: function() {
         var result = [];
@@ -127,7 +48,7 @@ SeaBattle.Ship.prototype = {
  * @param {Number} fieldHeight высота поля
  * @param {Number} fieldWidth ширина поля
  */
-SeaBattle.Field = function(onShotMissed, onShipDamaged, onSheepDied, playerLost, fieldHeight, fieldWidth) {
+BattleShip.Field = function(onShotMissed, onShipDamaged, onSheepDied, playerLost, fieldHeight, fieldWidth) {
 
     this.fieldHeight =  fieldHeight || 10;
     this.fieldWidth = fieldWidth || 10;
@@ -154,7 +75,7 @@ SeaBattle.Field = function(onShotMissed, onShipDamaged, onSheepDied, playerLost,
     this.initShips();
 }
 
-SeaBattle.Field.prototype = {
+BattleShip.Field.prototype = {
 
     /**
      * Инициализирует ячейки поля
@@ -162,8 +83,8 @@ SeaBattle.Field.prototype = {
     initCells: function() {
         for ( var i = 0; i < this.fieldWidth; i++ ) {
             for ( var j = 0; j < this.fieldHeight; j++ ) {
-                var pos = new SeaBattle.Position( i, j );
-                var cell = new SeaBattle.Cell( pos, null );
+                var pos = new BattleShip.Position( i, j );
+                var cell = new BattleShip.Cell( pos, null );
                 this.cellWidgets.push( cell );
             }
         }
@@ -173,10 +94,10 @@ SeaBattle.Field.prototype = {
      * Инициализирует и размещает корабли на поле
      */
     initShips: function() {
-        this.arrangeShips( SeaBattle.ShipsInfo.FOUR_DECKER.COUNT, SeaBattle.ShipsInfo.FOUR_DECKER.LENGTH );
-        this.arrangeShips( SeaBattle.ShipsInfo.THREE_DECKER.COUNT, SeaBattle.ShipsInfo.THREE_DECKER.LENGTH );
-        this.arrangeShips( SeaBattle.ShipsInfo.TWO_DECKER.COUNT, SeaBattle.ShipsInfo.TWO_DECKER.LENGTH );
-        this.arrangeShips( SeaBattle.ShipsInfo.SINGLE_DECKER.COUNT, SeaBattle.ShipsInfo.SINGLE_DECKER.LENGTH );
+        this.arrangeShips( BattleShip.ShipsInfo.FOUR_DECKER.COUNT, BattleShip.ShipsInfo.FOUR_DECKER.LENGTH );
+        this.arrangeShips( BattleShip.ShipsInfo.THREE_DECKER.COUNT, BattleShip.ShipsInfo.THREE_DECKER.LENGTH );
+        this.arrangeShips( BattleShip.ShipsInfo.TWO_DECKER.COUNT, BattleShip.ShipsInfo.TWO_DECKER.LENGTH );
+        this.arrangeShips( BattleShip.ShipsInfo.SINGLE_DECKER.COUNT, BattleShip.ShipsInfo.SINGLE_DECKER.LENGTH );
     },
 
     /**
@@ -224,16 +145,16 @@ SeaBattle.Field.prototype = {
 
                 if ( isVertical ) {
                     for (var i = yCoordinate; i < (yCoordinate + shipLength); i++) {
-                        shipPositions.push(new SeaBattle.Position(xCoordinate, i))
+                        shipPositions.push(new BattleShip.Position(xCoordinate, i))
                     }
                 } else { // horizontal
                     for (var i = xCoordinate; i < (xCoordinate + shipLength); i++) {
-                        shipPositions.push(new SeaBattle.Position(i, yCoordinate));
+                        shipPositions.push(new BattleShip.Position(i, yCoordinate));
                     }
                 }
 
                 // создаем корабль и добавляем в него ячейки
-                var ship = new SeaBattle.Ship();
+                var ship = new BattleShip.Ship();
 
                 for ( var i = 0; i < shipPositions.length; i++ ) {
                     var shipCell = this.getCellByPosition( shipPositions[i] );
@@ -264,20 +185,20 @@ SeaBattle.Field.prototype = {
      * @returns {Boolean}
      */
     isShipsPlacedAround: function(xCoordinate, yCoordinate, isVertical, shipLength) {
-        var topLeftPos = new SeaBattle.Position( xCoordinate - 1, yCoordinate - 1 );
+        var topLeftPos = new BattleShip.Position( xCoordinate - 1, yCoordinate - 1 );
 
         var bottomRightPos = null;
         if ( isVertical ) {
-            bottomRightPos = new SeaBattle.Position( xCoordinate + 1, yCoordinate + shipLength );
+            bottomRightPos = new BattleShip.Position( xCoordinate + 1, yCoordinate + shipLength );
         } else {
-            bottomRightPos = new SeaBattle.Position( xCoordinate + shipLength, yCoordinate + 1 );
+            bottomRightPos = new BattleShip.Position( xCoordinate + shipLength, yCoordinate + 1 );
         }
 
         var isShipExistInArea = false;
 
         for ( var i = topLeftPos.x; i <= bottomRightPos.x; i++ ) {
             for ( var j = topLeftPos.y; j <= bottomRightPos.y; j++ ) {
-                var cell = this.getCellByPosition( new SeaBattle.Position(i, j) );
+                var cell = this.getCellByPosition( new BattleShip.Position(i, j) );
                 if ( cell && cell.ship ) {
                     isShipExistInArea = true;
                     break;
@@ -302,11 +223,11 @@ SeaBattle.Field.prototype = {
             var shotStatus = this.getShotStatus(shotPosition);
             if ( shotStatus ) {
                 switch ( shotStatus ) {
-                    case SeaBattle.ShotStatus.DAMAGED:
+                    case BattleShip.ShotStatus.DAMAGED:
                         this.onShipDamaged( shotPosition );
                         break;
 
-                    case SeaBattle.ShotStatus.KILLED:
+                    case BattleShip.ShotStatus.KILLED:
                         var ship = this.getShipByPosition(shotPosition);
                         this.onSheepDied( ship.getPositions() );
 
@@ -315,7 +236,7 @@ SeaBattle.Field.prototype = {
                         }
                         break;
 
-                    case SeaBattle.ShotStatus.MISSED:
+                    case BattleShip.ShotStatus.MISSED:
                         this.onShotMissed( shotPosition );
                         break;
                 }
@@ -336,12 +257,12 @@ SeaBattle.Field.prototype = {
         // выполняем только если есть корабль на данной позиции
         if ( ship ) {
             if ( ship.isDead() ) {
-                result = SeaBattle.ShotStatus.KILLED;
+                result = BattleShip.ShotStatus.KILLED;
             } else {
-                result = SeaBattle.ShotStatus.DAMAGED;
+                result = BattleShip.ShotStatus.DAMAGED;
             }
         } else {
-            result =  SeaBattle.ShotStatus.MISSED;
+            result =  BattleShip.ShotStatus.MISSED;
         }
         return result;
     },
@@ -364,7 +285,7 @@ SeaBattle.Field.prototype = {
 
     /**
      * Устанавливает ячейку подбитой
-     * @param {SeaBattle.Position} pos позиция ячейки
+     * @param {BattleShip.Position} pos позиция ячейки
      */
     setCellFired: function(pos) {
         var cell = this.getCellByPosition(pos);
@@ -375,8 +296,8 @@ SeaBattle.Field.prototype = {
 
     /**
      * Возвращает корабль котор. находится на переданной позиции
-     * @param {SeaBattle.Position} pos позиция корабля
-     * @returns {SeaBattle.Ship}
+     * @param {BattleShip.Position} pos позиция корабля
+     * @returns {BattleShip.Ship}
      */
     getShipByPosition: function(pos) {
         var cell = this.getCellByPosition( pos );
@@ -385,8 +306,8 @@ SeaBattle.Field.prototype = {
 
     /**
      * Возвращает ячейку по переданной позиции
-     * @param {SeaBattle.Position} pos позиция
-     * @returns {SeaBattle.Cell}
+     * @param {BattleShip.Position} pos позиция
+     * @returns {BattleShip.Cell}
      */
     getCellByPosition: function(pos) {
         var result = null;
