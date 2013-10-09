@@ -57,44 +57,6 @@ SeaBattle.ShipsInfo = {
 
 
 /**
- * Объект корабля
- * @constructor
- */
-SeaBattle.Ship = function() {
-    this.cellWidgets = [];
-}
-
-SeaBattle.Ship.prototype = {
-
-    /**
-     * Метод возвращает true если корабль потоплен, иначе false
-     * @returns {boolean}
-     */
-    isDead: function() {
-        var isDead = true;
-        for ( var i =0; i < this.cellWidgets.length; i++ ) {
-            if ( !this.cellWidgets[i].isFired ) {
-                isDead = false;
-                break;
-            }
-        }
-        return isDead;
-    },
-
-    /**
-     * Возвращает позиции ячеек на которых установлен корабль
-     */
-    getPositions: function() {
-        var result = [];
-        for ( var i = 0; i < this.cellWidgets.length; i++ ) {
-            result.push(this.cellWidgets[i].pos);
-        }
-        return result;
-    }
-}
-
-
-/**
  * Статус выстрела
  * @type {{DAMAGED: string, KILLED: string}}
  */
@@ -116,30 +78,64 @@ SeaBattle.ShotStatus = {
     MISSED : "MISSED"
 }
 
+/**
+ * Объект корабля
+ */
+SeaBattle.Ship = function() {
+    this.cellWidgets = [];
+}
+
+/**
+ * Методы объекта корябля
+ */
+SeaBattle.Ship.prototype = {
+
+    /**
+     * Метод возвращает true если корабль потоплен, иначе false
+     * @returns {Boolean}
+     */
+    isDead: function() {
+        var isDead = true;
+        for ( var i =0; i < this.cellWidgets.length; i++ ) {
+            if ( !this.cellWidgets[i].isFired ) {
+                isDead = false;
+                break;
+            }
+        }
+        return isDead;
+    },
+
+    /**
+     * Возвращает позиции ячеек на которых установлен корабль
+     * @return {SeaBattle.Position}
+     */
+    getPositions: function() {
+        var result = [];
+        for ( var i = 0; i < this.cellWidgets.length; i++ ) {
+            result.push( this.cellWidgets[i].pos );
+        }
+        return result;
+    }
+}
+
 
 /**
  * Поле игры
- * @param onShipDamagedCallback колбэк срабатывающий при ранении корабля
- * @param onSheepDiedCallBack колбэк срабатывающий при потоплении корабля
- * @param playerLostCallback колбэк срабатывающий при проигрыше игрока
- * @param fieldHeight высота поля
- * @param fieldWidth ширина поля
- * @constructor
- * @param fieldWidth
- * @param fieldHeight
- * @param playerLostCallback
- * @param onSheepDiedCallBack
- * @param onShipDamagedCallback
+ * @param {Object} onShipDamaged колбэк срабатывающий при ранении корабля
+ * @param {Object} onSheepDied колбэк срабатывающий при потоплении корабля
+ * @param {Object} playerLost колбэк срабатывающий при проигрыше игрока
+ * @param {Number} fieldHeight высота поля
+ * @param {Number} fieldWidth ширина поля
  */
-SeaBattle.Field = function(onShotMissedCallback, onShipDamagedCallback, onSheepDiedCallBack, playerLostCallback, fieldHeight, fieldWidth) {
+SeaBattle.Field = function(onShotMissed, onShipDamaged, onSheepDied, playerLost, fieldHeight, fieldWidth) {
 
     this.fieldHeight =  fieldHeight || 10;
     this.fieldWidth = fieldWidth || 10;
 
-    this.onShotMissedCallback = onShotMissedCallback;
-    this.onShipDamagedCallback = onShipDamagedCallback;
-    this.onSheepDiedCallBack = onSheepDiedCallBack;
-    this.playerLostCallback = playerLostCallback;
+    this.onShotMissed = onShotMissed;
+    this.onShipDamaged = onShipDamaged;
+    this.onSheepDied = onSheepDied;
+    this.playerLost = playerLost;
 
     /**
      * Корабли на поле
@@ -166,9 +162,9 @@ SeaBattle.Field.prototype = {
     initCells: function() {
         for ( var i = 0; i < this.fieldWidth; i++ ) {
             for ( var j = 0; j < this.fieldHeight; j++ ) {
-                var pos = new SeaBattle.Position(i, j);
-                var cell = new SeaBattle.Cell(pos, null);
-                this.cellWidgets.push(cell);
+                var pos = new SeaBattle.Position( i, j );
+                var cell = new SeaBattle.Cell( pos, null );
+                this.cellWidgets.push( cell );
             }
         }
     },
@@ -185,8 +181,8 @@ SeaBattle.Field.prototype = {
 
     /**
      * Размещает несколько кораблей одной длины на поле
-     * @param shipsCount количество кораблей
-     * @param shipLength размер кораблей
+     * @param {Number} shipsCount количество кораблей
+     * @param {Number} shipLength размер кораблей
      */
     arrangeShips: function(shipsCount, shipLength) {
         for ( var i = 0; i < shipsCount; i++ ) {
@@ -196,7 +192,7 @@ SeaBattle.Field.prototype = {
 
     /**
      * Размещает корабль на поле
-     * @param shipLength
+     * @param {Number} shipLength
      */
     arrangeShip: function(shipLength) {
 
@@ -205,8 +201,8 @@ SeaBattle.Field.prototype = {
         while ( !shipIsPlaced ) {
             var isVertical = Math.random() > 0.5 ? true : false;
 
-            var xCoordinate = randomNumber(this.fieldWidth);
-            var yCoordinate = randomNumber(this.fieldHeight);
+            var xCoordinate = randomNumber( this.fieldWidth );
+            var yCoordinate = randomNumber( this.fieldHeight );
 
             // вычисляем рандомные координаты до тех пор пока они не будут вписываться в размеры поля
             if ( isVertical ) {
@@ -240,8 +236,8 @@ SeaBattle.Field.prototype = {
                 var ship = new SeaBattle.Ship();
 
                 for ( var i = 0; i < shipPositions.length; i++ ) {
-                    var shipCell = this.getCellByPosition(shipPositions[i]);
-                    ship.cellWidgets.push(shipCell);
+                    var shipCell = this.getCellByPosition( shipPositions[i] );
+                    ship.cellWidgets.push( shipCell );
                     shipCell.ship = ship;
                 }
                 this.ships.push( ship );
@@ -251,8 +247,8 @@ SeaBattle.Field.prototype = {
 
         /**
          * Возвращает рандомное число от 0 до указанного числа, округленное в меньшую сторону
-         * @param range верхняя граница числа + 1
-         * @returns {number}
+         * @param {Number} range верхняя граница числа + 1
+         * @returns {Number}
          */
         function randomNumber(range) {
             return Math.floor( Math.random() * (range - 1) );
@@ -261,11 +257,11 @@ SeaBattle.Field.prototype = {
 
     /**
      * Проверка на наличие кораблей в указанной зоне
-     * @param xCoordinate координата по оси Х первой ячейки корабля
-     * @param yCoordinate координата по оси Х первой ячейки корабля
-     * @param isVertical выравнивание корабля является вертикальным
-     * @param shipLength размер корабля
-     * @returns {boolean}
+     * @param {Number} xCoordinate координата по оси Х первой ячейки корабля
+     * @param {Number} yCoordinate координата по оси Х первой ячейки корабля
+     * @param {Boolean} isVertical выравнивание корабля является вертикальным
+     * @param {Number} shipLength размер корабля
+     * @returns {Boolean}
      */
     isShipsPlacedAround: function(xCoordinate, yCoordinate, isVertical, shipLength) {
         var topLeftPos = new SeaBattle.Position( xCoordinate - 1, yCoordinate - 1 );
@@ -294,7 +290,7 @@ SeaBattle.Field.prototype = {
 
     /**
      * Производит выстрел по указанной позиции и в ответ вызывает соответствующие колбэки
-     * @param shotPosition
+     * @param {Array} shotPosition
      */
     makeShot: function(shotPosition) {
         var cell = this.getCellByPosition( shotPosition );
@@ -307,20 +303,20 @@ SeaBattle.Field.prototype = {
             if ( shotStatus ) {
                 switch ( shotStatus ) {
                     case SeaBattle.ShotStatus.DAMAGED:
-                        this.onShipDamagedCallback( shotPosition );
+                        this.onShipDamaged( shotPosition );
                         break;
 
                     case SeaBattle.ShotStatus.KILLED:
                         var ship = this.getShipByPosition(shotPosition);
-                        this.onSheepDiedCallBack( ship.getPositions() );
+                        this.onSheepDied( ship.getPositions() );
 
                         if ( this.playerHasLost() ) {
-                            this.playerLostCallback();
+                            this.playerLost();
                         }
                         break;
 
                     case SeaBattle.ShotStatus.MISSED:
-                        this.onShotMissedCallback( shotPosition );
+                        this.onShotMissed( shotPosition );
                         break;
                 }
             }
@@ -329,8 +325,8 @@ SeaBattle.Field.prototype = {
 
     /**
      * Получение информации об итоге выстрела (нанес урон / потопил корабль / выйграл игру)
-     * @param shotPosition позиция выстрела
-     * @returns {null}
+     * @param {Array} shotPosition позиция выстрела
+     * @returns {Null}
      */
     getShotStatus: function(shotPosition) {
 
@@ -368,7 +364,7 @@ SeaBattle.Field.prototype = {
 
     /**
      * Устанавливает ячейку подбитой
-     * @param pos позиция ячейки
+     * @param {SeaBattle.Position} pos позиция ячейки
      */
     setCellFired: function(pos) {
         var cell = this.getCellByPosition(pos);
@@ -379,8 +375,8 @@ SeaBattle.Field.prototype = {
 
     /**
      * Возвращает корабль котор. находится на переданной позиции
-     * @param pos позиция корабля
-     * @returns {*}
+     * @param {SeaBattle.Position} pos позиция корабля
+     * @returns {SeaBattle.Ship}
      */
     getShipByPosition: function(pos) {
         var cell = this.getCellByPosition( pos );
@@ -389,8 +385,8 @@ SeaBattle.Field.prototype = {
 
     /**
      * Возвращает ячейку по переданной позиции
-     * @param pos позиция
-     * @returns {null}
+     * @param {SeaBattle.Position} pos позиция
+     * @returns {SeaBattle.Cell}
      */
     getCellByPosition: function(pos) {
         var result = null;

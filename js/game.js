@@ -7,12 +7,11 @@ window.SeaBattle = SeaBattle; // делаем пространство имен 
 
 /**
  * Объект игры Морской бой
- * @param humanContainer Контейнер для отображения поля человека
- * @param botContainer Контейнер для отображения поля компьютера
- * @param gameStatusContainer Контейнер для отображения статуса игры
- * @param arenaWidth ширина поля
- * @param arenaHeight высота поля
- * @constructor
+ * @param {jQuery obj} humanContainer Контейнер для отображения поля человека
+ * @param {jQuery obj} botContainer Контейнер для отображения поля компьютера
+ * @param {jQuery obj} gameStatusContainer Контейнер для отображения статуса игры
+ * @param {Number} arenaWidth ширина поля
+ * @param {Number} arenaHeight высота поля
  */
 SeaBattle.Game = function( humanContainer, botContainer, gameStatusContainer, arenaWidth, arenaHeight ) {
 
@@ -23,13 +22,13 @@ SeaBattle.Game = function( humanContainer, botContainer, gameStatusContainer, ar
     this.fieldHeight = arenaHeight;
 
     /**
-     * Модель поля человека
+     * Поле человека
      * @type {SeaBattle.Field}
      */
     this.humanField;
 
     /**
-     * Модель поля компьютера
+     * Поле компьютера
      * @type {SeaBattle.Field}
      */
     this.botField;
@@ -42,10 +41,13 @@ SeaBattle.Game = function( humanContainer, botContainer, gameStatusContainer, ar
 
 }
 
+/**
+ * Методы для объекта игры
+ */
 SeaBattle.Game.prototype = {
 
     /**
-     * Стартует игру
+     * Старт
      */
     start: function() {
         this.initHumanField();
@@ -56,25 +58,25 @@ SeaBattle.Game.prototype = {
 
 
     /**
-     * Инициализирует массив позиций по которым будет стрелять компьютер
+     * Инициализация массива позиций по которым будет стрелять компьютер
      */
     initBotShootingPositions: function() {
         for ( var i = 0; i < this.fieldWidth; i++ ) {
             for ( var j = 0; j < this.fieldHeight; j++ ) {
-                this.botShootingPositions.push( new SeaBattle.Position(i, j) );
+                this.botShootingPositions.push( new SeaBattle.Position( i, j ) );
             }
         }
-        // перемешиваем
-        shuffleArray( this.botShootingPositions) ;
+        shuffleArray( this.botShootingPositions ) ;
 
-        function shuffleArray(o) { // взято отсюда: http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array-in-javascript
+        // http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array-in-javascript
+        function shuffleArray(o) { 
             for( var j, x, i = o.length; i; j = Math.floor( Math.random() * i ), x = o[--i], o[i] = o[j], o[j] = x );
             return o;
         }
     },
 
     /**
-     * Инициализация представления поля компьютера
+     * Инициализация поля компьютера
      */
     initBotField: function() {
 
@@ -94,6 +96,7 @@ SeaBattle.Game.prototype = {
 
         var onShipDiedHandler = function(shipPositions) {
             self.markShipDied( table, shipPositions );
+
         }
 
         var onBotLostHandler = function() {
@@ -118,11 +121,11 @@ SeaBattle.Game.prototype = {
     },
 
     /**
-     * Инициализация представления поля человека
+     * Инициализация поля человека
      */
     initHumanField: function() {
 
-        var table = this.createTable(this.humanContainer);
+        var table = this.createTable( this.humanContainer );
 
         var self = this;
 
@@ -166,9 +169,9 @@ SeaBattle.Game.prototype = {
     },
 
     /**
-     * Инициализирует визуальное представление поля игры
-     * @param container родительский контейнер
-     * @returns {*}
+     * Инициализация поля игры
+     * @param {jQuery obj} container родительский контейнер
+     * @returns {jQuery obj} table поле игры
      */
     createTable: function(container) {
         var table = $('<table></table>').addClass('field');
@@ -179,7 +182,6 @@ SeaBattle.Game.prototype = {
                 $('<td></td>').appendTo(tr);
             }
         }
-
        $(container).append(table);
 
        return table;
@@ -188,10 +190,11 @@ SeaBattle.Game.prototype = {
 
     /**
      * Атака компьютера
+     * Происходит по таймауту
      */
     botAttack: function() {
         var self = this;
-        // делаем таймаут для эффекта обдумывания следующего хода компьютером
+
         setTimeout(function () {
             var pos = self.botShootingPositions.pop();
             self.humanField.makeShot(pos);
@@ -201,8 +204,8 @@ SeaBattle.Game.prototype = {
 
     /**
      * Закрашивает клетку раненого корабля
-     * @param table
-     * @param pos позиция клетки
+     * @param {jQuery obj} table
+     * @param {SeaBattle.Position} pos позиция клетки
      */
     markShipDamaged: function(table, pos) {
         table.find('tr').eq(pos.y).find('td').eq(pos.x).removeClass('fired_cell').addClass('damaged_ship');
@@ -210,8 +213,8 @@ SeaBattle.Game.prototype = {
 
     /**
      * Закрашивает клетки потопленного корабля
-     * @param table элемент таблицы
-     * @param shipPositions позиции на которых был установлен корабль
+     * @param {jQuery obj} table элемент таблицы
+     * @param {SeaBattle.Position} shipPositions позиции на которых был установлен корабль
      */
     markShipDied: function(table, shipPositions) {
         for ( var i = 0; i < shipPositions.length; i++ ) {
