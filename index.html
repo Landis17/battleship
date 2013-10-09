@@ -15,70 +15,74 @@
 </head>
 
 <body>
-
-    <div id="game_container">
-        <div id="header">
-            <span id="user_info">Имя игрока: </span>
+<div class="container">
+    <div class="game">
+        <div class="header">
+            <span class="user_info">Имя игрока: </span>
         </div>
-
-        <div id="arena_container">
-            <div id="game_status"></div>
-            <div id="bot_field" class="field_container">Поле компьютера</div>
-            <div id="human_field" class="field_container">Ваше поле</div>
+        <div class="arena_container">
+            <div class="game_status"></div>
+            <div class="bot">
+                <p>Поле компьютера</p>
+            </div>
+            <div class="human">
+                <p>Ваше поле</p>
+            </div>
         </div>
 
     </div>
 
-    <div id="input_username_box">
-        <div>Введите имя игрока</div>
+    <div class="greetings">
+        <h1>Привет!</h1>
+        <p>Это игра Морской бой. Укажите свое имя. Начинайте играть.</p>
         <form>
-            <input type="text" id="username_box_tb"/>
-            <input type="button" id="username_box_btn" value="Начать игру"/>
+            <input type="text" class="username"/>
+            <button type="text" class="username_btn">Начать игру</button>
         </form>
-    </div>
-
-    <div id="backgroundPopup"></div>
+    <div>
+</div>
 
     <script>
         jQuery(function($) {
 
             init();
 
-            var game = new SeaBattle.Game( $('#human_field'), $('#bot_field'), $('#game_status'), 10, 10 );
+            var game = new SeaBattle.Game( $('.human'), $('.bot'), $('.game_status'), 10, 10 );
 
             game.start();
 
             function init() {
-                $('#game_container').hide();
+                $('.game').hide();
 
-                $('#username_box_tb').focus();
+                $('.username').focus();
 
-                $('#username_box_btn').on('click', function() {
-                    onUserName()
+                $('.username_btn').on('click', function(e) {
+                    onUserName();
+                    e.preventDefault();
                 });
 
-                $('#username_box_tb').on('keydown', function(e) {
+                $('.username').on('keydown', function(e) {
                     if (e.keyCode == 13) {
                         onUserName();
                         e.preventDefault();
                     }
-                })
+                });
 
                 function onUserName() {
-                    var userName = $('#username_box_tb').val();
+                    var userName = $('.username').val();
 
-                    if ( !$('#username_box_tb').val() ) {
+                    if ( !$('.username').val() ) {
                         alert("Введите имя!");
                         return;
                     }
 
-                    $('#user_info').append(userName);
+                    $('.user_info').append(userName);
 
-                    $('#input_username_box').hide(500);
-                    $('#game_container').show(500);
+                    $('.greetings').hide(500);
+                    $('.game').show(500);
                 }
             }
-        })
+        });
 
     </script>
 

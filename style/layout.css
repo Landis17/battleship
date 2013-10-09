@@ -1,61 +1,118 @@
-
 body {
-    color: #262825;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.428571429;
+    color: #333333;
+    background-color: #ffffff;
 }
-
-#header {
+.container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.header {
     width: 100%;
     height: 3em;
 
 }
-
-#user_info {
-    font-size: 1.3em;
+.user_info {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    border-left: 5px solid #eeeeee;
+    font-size: 17.5px;
+    font-weight: 300;
+    line-height: 1.25;
 }
-
-#arena_container {
+.arena_container {
     font-size: 1.1em;
     width: 80%;
     margin: 0 auto;
 }
-
-#game_status {
+.game_status {
     text-align: left;
-    margin-left: 2em;
+    margin-left: 30px;
 }
-
-.field_container {
+.bot, .human {
     width: 35%;
     float: left;
     padding: 2em;
 }
-
-#input_username_box {
-    display: table;
-    margin: 0 auto;
-    border: inset #9a9ca3;
-    padding: 1em;
+.bot p, .human p, .game_status {
+    font-size: 21px;
+    font-weight: 200;
+    line-height: 1.4;
 }
-
+.greetings {
+    padding: 30px;
+    margin-bottom: 30px;
+    font-size: 21px;
+    font-weight: 200;
+    line-height: 2.1428571435;
+    color: inherit;
+    background-color: #eeeeee;
+    border-radius: 6px;
+}
+.username {
+    width: 50%;
+    height: 22px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.428571429;
+    color: #555555;
+    vertical-align: middle;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+          transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+.username_btn {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.428571429;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+       -o-user-select: none;
+          user-select: none;
+  color: #333333;
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+.username_btn:hover,
+.username_btn:focus,
+.username_btn:active {
+  color: #333333;
+  background-color: #ebebeb;
+  border-color: #adadad;
+}
 .field td {
     background-size: contain;
     border: solid black 1px;
     height: 1em;
     width: 1em;
 }
-
 .fired_cell {
     background-color: #9a9ca3;
 }
-
 .live_ship {
-    background-color: #44b827;
+    background-color: #5cb85c;
 }
-
 .damaged_ship {
-    background-color: #b89b00;
+    background-color: #f0ad4e;
 }
-
 .died_ship {
-    background-color: #b82100;
+    background-color: #d9534f;
 }
