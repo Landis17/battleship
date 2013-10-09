@@ -15,17 +15,18 @@ body {
 
 #arena_container {
     font-size: 1.1em;
-    width: 50%;
+    width: 80%;
     margin: 0 auto;
 }
 
 #game_status {
-    text-align: center;
+    text-align: left;
+    margin-left: 2em;
 }
 
 .field_container {
-    margin: 0 auto;
-    float: right;
+    width: 35%;
+    float: left;
     padding: 2em;
 }
 
