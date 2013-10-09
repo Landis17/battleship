@@ -136,7 +136,6 @@ BattleShip.Field.prototype = {
                 }
             }
 
-
             // проверяем пространство вокруг создаваемого корабля
             var isOtherShipsInArea = this.isShipsPlacedAround( xCoordinate, yCoordinate, isVertical, shipLength );
 

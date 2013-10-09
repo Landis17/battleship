@@ -33,9 +33,7 @@
                 <p>Ваше поле</p>
             </div>
         </div>
-
     </div>
-
     <div class="greetings">
         <h1>Привет!</h1>
         <p>Это игра Морской бой. Укажите свое имя. Начинайте играть.</p>
@@ -80,8 +78,8 @@ jQuery(function($) {
                 alert("Введите имя!");
                 return;
             }
-
-            $('.user_info').append(userName);
+            
+            $('.user_info').append( userName );
             $('.greetings').hide(500);
             $('.game').show(500);
         }

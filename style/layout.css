@@ -94,9 +94,9 @@ body {
 .username_btn:hover,
 .username_btn:focus,
 .username_btn:active {
-  color: #333333;
-  background-color: #ebebeb;
-  border-color: #adadad;
+    color: #333333;
+    background-color: #ebebeb;
+    border-color: #adadad;
 }
 .field td {
     background-size: contain;

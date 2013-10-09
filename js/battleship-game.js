@@ -90,7 +90,6 @@ BattleShip.Game.prototype = {
 
         var onShipDiedHandler = function(shipPositions) {
             self.markShipDied( table, shipPositions );
-
         }
 
         var onBotLostHandler = function() {
@@ -213,6 +212,11 @@ BattleShip.Game.prototype = {
     markShipDied: function(table, shipPositions) {
         for ( var i = 0; i < shipPositions.length; i++ ) {
             table.find('tr').eq(shipPositions[i].y).find('td').eq(shipPositions[i].x).removeClass('fired_cell').addClass('died_ship');
+            // table.find('tr').eq(shipPositions[i].y).find('td').eq(shipPositions[i].x).siblings().each(function () {
+            //     if ( ! $(this).hasClass('died_ship') ) {
+            //         $(this).addClass('fired_cell');
+            //     }
+            // });
         }
     }
 }

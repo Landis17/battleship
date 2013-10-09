@@ -1,6 +1,7 @@
 'use strict';
+/**
+ * Глобальное пространство имен
+ */
+var BattleShip = {};
 
-
-var BattleShip = {}; // инициализируем пространство имен
-
-window.BattleShip = BattleShip; // делаем пространство имен доступным из вне
+window.BattleShip = BattleShip;
