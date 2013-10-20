@@ -109,7 +109,7 @@ BattleShip.Game.prototype = {
         table.on('click', 'td', function() {
             var xCoordinate = this.cellIndex;
             var yCoordinate = this.parentNode.rowIndex;
-            self.botField.makeShot( new BattleShip.Position(xCoordinate, yCoordinate) );
+            self.botField.makeShot( new BattleShip.Position( xCoordinate, yCoordinate ) );
         });
     },
 
@@ -212,6 +212,14 @@ BattleShip.Game.prototype = {
     markShipDied: function(table, shipPositions) {
         for ( var i = 0; i < shipPositions.length; i++ ) {
             table.find('tr').eq(shipPositions[i].y).find('td').eq(shipPositions[i].x).removeClass('fired_cell').addClass('died_ship');
+            
+            // mark around cells 
+            for ( var x = shipPositions[i].x - 1; x <= shipPositions[i].x + 1; x++ ) {
+                for ( var y = shipPositions[i].y - 1; y <= shipPositions[i].y + 1; y++ ) {
+                    table.find('tr').eq(y).find('td').eq(x).addClass('fired_cell');
+                }       
+            }
+
         }
     }
 }

@@ -227,7 +227,7 @@ BattleShip.Field.prototype = {
                         break;
 
                     case BattleShip.ShotStatus.KILLED:
-                        var ship = this.getShipByPosition(shotPosition);
+                        var ship = this.getShipByPosition( shotPosition );
                         this.onSheepDied( ship.getPositions() );
 
                         if ( this.playerHasLost() ) {
@@ -249,10 +249,9 @@ BattleShip.Field.prototype = {
      * @returns {Null}
      */
     getShotStatus: function(shotPosition) {
+        var result = null
+          , ship = this.getShipByPosition( shotPosition );
 
-        var result = null;
-
-        var ship = this.getShipByPosition( shotPosition );
         // выполняем только если есть корабль на данной позиции
         if ( ship ) {
             if ( ship.isDead() ) {
@@ -287,7 +286,7 @@ BattleShip.Field.prototype = {
      * @param {BattleShip.Position} pos позиция ячейки
      */
     setCellFired: function(pos) {
-        var cell = this.getCellByPosition(pos);
+        var cell = this.getCellByPosition( pos );
         if ( cell ) {
             cell.isFired = true;
         }
