@@ -90,6 +90,7 @@ BattleShip.Game.prototype = {
 
         var onShipDiedHandler = function(shipPositions) {
             self.markShipDied( table, shipPositions );
+            self.markAroundShipDied( table, shipPositions );
         }
 
         var onBotLostHandler = function() {
@@ -134,6 +135,7 @@ BattleShip.Game.prototype = {
 
         var onShipDiedHandler = function(shipPositions) {
             self.markShipDied( table, shipPositions );
+            self.markAroundShipDied( table, shipPositions );
             self.botAttack();
         }
 
@@ -212,14 +214,21 @@ BattleShip.Game.prototype = {
     markShipDied: function(table, shipPositions) {
         for ( var i = 0; i < shipPositions.length; i++ ) {
             table.find('tr').eq(shipPositions[i].y).find('td').eq(shipPositions[i].x).removeClass('fired_cell').addClass('died_ship');
-            
-            // mark around cells 
+        }
+    },
+
+    /**
+     * 
+     * @param {jQuery obj} table элемент таблицы
+     * @param {BattleShip.Position} shipPositions позиции на которых был установлен корабль
+     */
+    markAroundShipDied: function(table, shipPositions) {
+        for ( var i = 0; i < shipPositions.length; i++ ) {
             for ( var x = shipPositions[i].x - 1; x <= shipPositions[i].x + 1; x++ ) {
                 for ( var y = shipPositions[i].y - 1; y <= shipPositions[i].y + 1; y++ ) {
                     table.find('tr').eq(y).find('td').eq(x).addClass('fired_cell');
-                }       
+                }
             }
-
         }
     }
 }

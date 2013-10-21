@@ -101,8 +101,8 @@ body {
 .field td {
     background-size: contain;
     border: solid black 1px;
-    height: 1em;
-    width: 1em;
+    height: 2em;
+    width: 2em;
 }
 .fired_cell {
     background-color: #9a9ca3;
