@@ -229,7 +229,7 @@ BattleShip.Field.prototype = {
                     case BattleShip.ShotStatus.KILLED:
                         var ship = this.getShipByPosition( shotPosition );
                         this.onSheepDied( ship.getPositions() );
-                        this.setCellsFired( ship.getPositions() );
+                        this.setAroundCellsFired( ship.getPositions() );
 
                         if ( this.playerHasLost() ) {
                             this.playerLost();
@@ -296,7 +296,7 @@ BattleShip.Field.prototype = {
     /**
      * 
      */
-    setCellsFired: function(shipPositions) {
+    setAroundCellsFired: function(shipPositions) {
         for ( var i = 0; i < shipPositions.length; i++ ) {
             for ( var x = shipPositions[i].x - 1; x <= shipPositions[i].x + 1; x++ ) {
                 for ( var y = shipPositions[i].y - 1; y <= shipPositions[i].y + 1; y++ ) {

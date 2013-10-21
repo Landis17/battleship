@@ -226,7 +226,9 @@ BattleShip.Game.prototype = {
         for ( var i = 0; i < shipPositions.length; i++ ) {
             for ( var x = shipPositions[i].x - 1; x <= shipPositions[i].x + 1; x++ ) {
                 for ( var y = shipPositions[i].y - 1; y <= shipPositions[i].y + 1; y++ ) {
-                    table.find('tr').eq(y).find('td').eq(x).addClass('fired_cell');
+                    if ( x >= 0 && y >= 0 ) {
+                        table.find('tr').eq(y).find('td').eq(x).addClass('fired_cell');
+                    }
                 }
             }
         }
