@@ -74,9 +74,8 @@ BattleShip.Game.prototype = {
      */
     initBotField: function() {
 
-        var table = this.createTable( this.botContainer );
-
-        var self = this;
+        var table = this.createTable( this.botContainer )
+          , self = this;
 
         var onShotMissedHandler = function(pos) {
             $(self.gameStatusContainer).text("Ход противника");
@@ -119,9 +118,8 @@ BattleShip.Game.prototype = {
      */
     initHumanField: function() {
 
-        var table = this.createTable( this.humanContainer );
-
-        var self = this;
+        var table = this.createTable( this.humanContainer )
+          , self = this;
 
         var onShotMissedHandler = function(pos) {
             $(self.gameStatusContainer).text("Ваш ход");
@@ -130,7 +128,7 @@ BattleShip.Game.prototype = {
 
         var onShipDamagedHandler = function(pos) {
             self.markShipDamaged( table, pos );
-            self.botAttack();
+            self.botAttack( pos );
         }
 
         var onShipDiedHandler = function(shipPositions) {
@@ -185,10 +183,16 @@ BattleShip.Game.prototype = {
 
     /**
      * Атака компьютера
-     * Происходит по таймауту
+     * Происходит по таймауту для создания иллюзии обдумывания
+     * Если корабль подбит, бьет соседние ячейки
+     * @param {BattleShip.Positions} pos подбитая ячейка
      */
-    botAttack: function() {
+    botAttack: function(pos) {
         var self = this;
+        if ( pos ) {
+            var cell = self.humanField.getCellByPosition( pos );
+            console.log(pos, cell);
+        }
 
         setTimeout(function () {
             var pos = self.botShootingPositions.pop();
@@ -218,7 +222,7 @@ BattleShip.Game.prototype = {
     },
 
     /**
-     * 
+     * Закрашивает клетки вокруг потопленного корабля
      * @param {jQuery obj} table элемент таблицы
      * @param {BattleShip.Position} shipPositions позиции на которых был установлен корабль
      */

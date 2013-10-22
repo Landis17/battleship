@@ -143,12 +143,12 @@ BattleShip.Field.prototype = {
                 var shipPositions = [];
 
                 if ( isVertical ) {
-                    for (var i = yCoordinate; i < (yCoordinate + shipLength); i++) {
-                        shipPositions.push(new BattleShip.Position(xCoordinate, i))
+                    for ( var i = yCoordinate; i < ( yCoordinate + shipLength ); i++ ) {
+                        shipPositions.push( new BattleShip.Position( xCoordinate, i ) );
                     }
                 } else { // horizontal
-                    for (var i = xCoordinate; i < (xCoordinate + shipLength); i++) {
-                        shipPositions.push(new BattleShip.Position(i, yCoordinate));
+                    for ( var i = xCoordinate; i < ( xCoordinate + shipLength ); i++ ) {
+                        shipPositions.push( new BattleShip.Position( i, yCoordinate ) );
                     }
                 }
 
@@ -294,7 +294,8 @@ BattleShip.Field.prototype = {
     },
 
     /**
-     * 
+     * Устанавливает окружающие ячейки корабля подбитыми
+     * @param {Array} shipPositions ячейки корабля
      */
     setAroundCellsFired: function(shipPositions) {
         for ( var i = 0; i < shipPositions.length; i++ ) {
