@@ -80,7 +80,7 @@ BattleShip.Game.prototype = {
         var onShotMissedHandler = function(pos) {
             $(self.gameStatusContainer).text("Ход противника");
             table.find('tr').eq(pos.y).find('td').eq(pos.x).addClass('fired_cell');
-            self.botAttack();
+            self.botRandomAttack();
         }
 
         var onShipDamagedHandler = function(pos) {
@@ -128,13 +128,13 @@ BattleShip.Game.prototype = {
 
         var onShipDamagedHandler = function(pos) {
             self.markShipDamaged( table, pos );
-            self.botAttack( pos );
+            self.botAroundAttack( pos );
         }
 
         var onShipDiedHandler = function(shipPositions) {
             self.markShipDied( table, shipPositions );
             self.markAroundShipDied( table, shipPositions );
-            self.botAttack();
+            self.botRandomAttack();
         }
 
         var onHumanLostHandler = function() {
@@ -187,17 +187,50 @@ BattleShip.Game.prototype = {
      * Если корабль подбит, бьет соседние ячейки
      * @param {BattleShip.Positions} pos подбитая ячейка
      */
-    botAttack: function(pos) {
+    botRandomAttack: function() {
         var self = this;
-        if ( pos ) {
-            var cell = self.humanField.getCellByPosition( pos );
-            console.log(pos, cell);
-        }
 
         setTimeout(function () {
-            var pos = self.botShootingPositions.pop();
-            self.humanField.makeShot(pos);
+            var shotPos = self.botShootingPositions.pop();
+            self.humanField.makeShot(shotPos);
         }, 1000);
+
+    },
+
+    /**
+     * Атака компьютера
+     * Происходит по таймауту для создания иллюзии обдумывания
+     * Если корабль подбит, бьет соседние ячейки
+     * @param {BattleShip.Positions} pos подбитая ячейка
+     */
+    botAroundAttack: function(pos) {
+        var self = this
+          , botArroundPositions = [];
+
+        for ( var x = pos.x - 1; x <= pos.x + 1; x++ ) {
+            for ( var y = pos.y - 1; y <= pos.y + 1; y++ ) {
+                if ( x >= 0 && y >= 0 && x != y) {
+                    var cell = this.humanField.getCellByPosition( { x: x, y: y } );
+                    if ( cell && !cell.isFired ) {
+                        botArroundPositions.push(cell);
+                    }
+                }
+            }
+        }
+
+        console.log(botArroundPositions, 'arround');
+        console.log(this.botShootingPositions.length, 'shooting');
+
+        // setTimeout(function () {
+        //     var shotPos = botArroundPositions.pop();
+
+        //     self.botShootingPositions.splice( self.botShootingPositions.indexOf( shotPos ), 1 );
+        //     self.humanField.makeShot( shotPos.pos );
+
+        //     console.log(pos, 'pos');
+        //     console.log(shotPos, 'shotPos');
+        //     console.log(self.botShootingPositions.length, 'shooting');            
+        // }, 1000);
 
     },
 
