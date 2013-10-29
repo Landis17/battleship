@@ -128,7 +128,8 @@ BattleShip.Game.prototype = {
 
         var onShipDamagedHandler = function(pos) {
             self.markShipDamaged( table, pos );
-            self.botAroundAttack( pos );
+            // self.botAroundAttack( pos );
+            self.botRandomAttack();
         }
 
         var onShipDiedHandler = function(shipPositions) {
@@ -205,21 +206,39 @@ BattleShip.Game.prototype = {
      */
     botAroundAttack: function(pos) {
         var self = this
-          , botArroundPositions = [];
+          , botArroundPositions = []
+          , isOdd = function(num) { return num % 2 };
 
         for ( var x = pos.x - 1; x <= pos.x + 1; x++ ) {
             for ( var y = pos.y - 1; y <= pos.y + 1; y++ ) {
-                if ( x >= 0 && y >= 0 && x != y) {
+                if ( x >= 0 && y >= 0 ) {
                     var cell = this.humanField.getCellByPosition( { x: x, y: y } );
-                    if ( cell && !cell.isFired ) {
-                        botArroundPositions.push(cell);
+                    if ( cell ) {
+                        botArroundPositions.push( cell );
                     }
                 }
             }
         }
 
-        console.log(botArroundPositions, 'arround');
-        console.log(this.botShootingPositions.length, 'shooting');
+        for ( var i = 0, iLen = botArroundPositions.length; i < iLen; i++ ) {
+            var iItem = botArroundPositions[i];
+            if ( isOdd( i ) && !iItem.isFired ) {
+                for ( var j = 0, jLen = self.botShootingPositions.length; j < jLen; j++ ) {
+                    var jItem = self.botShootingPositions[j];
+                    if ( jItem.x == iItem.pos.x && jItem.y == iItem.pos.y ) {
+                        console.log(pos, 'pos');
+                        console.log(botArroundPositions, 'botArroundPositions');
+                        console.log(iItem.pos, 'iItem');
+                        console.log(jItem, 'jItem');
+                        console.log('**************');
+                    }
+                }
+            }
+        }
+        
+        // console.log(pos, 'pos');
+        // console.log(botArroundPositions, 'arround');
+        // console.log(this.botShootingPositions.length, 'shooting');
 
         // setTimeout(function () {
         //     var shotPos = botArroundPositions.pop();
