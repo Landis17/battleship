@@ -1,19 +1,19 @@
 'use strict';
 /**
- * Объект корабля
+ * Ship constructor
  */
 BattleShip.Ship = function() {
     this.cellWidgets = [];
 }
 
 /**
- * Методы объекта корябля
+ * Ship methods
  */
 BattleShip.Ship.prototype = {
 
     /**
-     * Метод возвращает true если корабль потоплен, иначе false
-     * @returns {Boolean}
+     * isDead
+     * @returns {Boolean} is ship dead?
      */
     isDead: function() {
         var isDead = true;
@@ -27,7 +27,7 @@ BattleShip.Ship.prototype = {
     },
 
     /**
-     * Возвращает позиции ячеек на которых установлен корабль
+     * Get ship positions
      * @return {BattleShip.Position}
      */
     getPositions: function() {
@@ -41,12 +41,12 @@ BattleShip.Ship.prototype = {
 
 
 /**
- * Поле игры
- * @param {Object} onShipDamaged колбэк срабатывающий при ранении корабля
- * @param {Object} onSheepDied колбэк срабатывающий при потоплении корабля
- * @param {Object} playerLost колбэк срабатывающий при проигрыше игрока
- * @param {Number} fieldHeight высота поля
- * @param {Number} fieldWidth ширина поля
+ * Field constructor
+ * @param {Object} onShipDamaged
+ * @param {Object} onSheepDied
+ * @param {Object} playerLost
+ * @param {Number} fieldHeight
+ * @param {Number} fieldWidth
  */
 BattleShip.Field = function(onShotMissed, onShipDamaged, onSheepDied, playerLost, fieldHeight, fieldWidth) {
 
@@ -59,13 +59,13 @@ BattleShip.Field = function(onShotMissed, onShipDamaged, onSheepDied, playerLost
     this.playerLost = playerLost;
 
     /**
-     * Корабли на поле
+     * ships
      * @type {Array}
      */
     this.ships = [];
 
     /**
-     * Ячейки поля
+     * Field cells
      * @type {Array}
      */
     this.cellWidgets = [];
@@ -78,7 +78,7 @@ BattleShip.Field = function(onShotMissed, onShipDamaged, onSheepDied, playerLost
 BattleShip.Field.prototype = {
 
     /**
-     * Инициализирует ячейки поля
+     * Init field cells
      */
     initCells: function() {
         for ( var i = 0; i < this.fieldWidth; i++ ) {
@@ -91,7 +91,7 @@ BattleShip.Field.prototype = {
     },
 
     /**
-     * Инициализирует и размещает корабли на поле
+     * Init place ships
      */
     initShips: function() {
         this.arrangeShips( BattleShip.ShipsInfo.FOUR_DECKER.COUNT, BattleShip.ShipsInfo.FOUR_DECKER.LENGTH );
@@ -101,9 +101,9 @@ BattleShip.Field.prototype = {
     },
 
     /**
-     * Размещает несколько кораблей одной длины на поле
-     * @param {Number} shipsCount количество кораблей
-     * @param {Number} shipLength размер кораблей
+     * Place one count ships
+     * @param {Number} shipsCount ships count
+     * @param {Number} shipLength ships size
      */
     arrangeShips: function(shipsCount, shipLength) {
         for ( var i = 0; i < shipsCount; i++ ) {
@@ -112,7 +112,7 @@ BattleShip.Field.prototype = {
     },
 
     /**
-     * Размещает корабль на поле
+     * Place one ship
      * @param {Number} shipLength
      */
     arrangeShip: function(shipLength) {
@@ -125,7 +125,7 @@ BattleShip.Field.prototype = {
             var xCoordinate = randomNumber( this.fieldWidth );
             var yCoordinate = randomNumber( this.fieldHeight );
 
-            // вычисляем рандомные координаты до тех пор пока они не будут вписываться в размеры поля
+            // get coords in game field
             if ( isVertical ) {
                 while( yCoordinate + shipLength >= this.fieldHeight ) {
                     yCoordinate = randomNumber(this.fieldHeight);
@@ -136,7 +136,7 @@ BattleShip.Field.prototype = {
                 }
             }
 
-            // проверяем пространство вокруг создаваемого корабля
+            // check range space
             var isOtherShipsInArea = this.isShipsPlacedAround( xCoordinate, yCoordinate, isVertical, shipLength );
 
             if ( !isOtherShipsInArea ) {
@@ -152,7 +152,7 @@ BattleShip.Field.prototype = {
                     }
                 }
 
-                // создаем корабль и добавляем в него ячейки
+                // create ships and push cells in it
                 var ship = new BattleShip.Ship();
 
                 for ( var i = 0; i < shipPositions.length; i++ ) {
@@ -166,8 +166,8 @@ BattleShip.Field.prototype = {
         }
 
         /**
-         * Возвращает рандомное число от 0 до указанного числа, округленное в меньшую сторону
-         * @param {Number} range верхняя граница числа + 1
+         * Get random number from 0 to range
+         * @param {Number} range 
          * @returns {Number}
          */
         function randomNumber(range) {
@@ -176,11 +176,11 @@ BattleShip.Field.prototype = {
     },
 
     /**
-     * Проверка на наличие кораблей в указанной зоне
-     * @param {Number} xCoordinate координата по оси Х первой ячейки корабля
-     * @param {Number} yCoordinate координата по оси Х первой ячейки корабля
-     * @param {Boolean} isVertical выравнивание корабля является вертикальным
-     * @param {Number} shipLength размер корабля
+     * Check ships in arround space
+     * @param {Number} xCoordinate first cell of ship
+     * @param {Number} yCoordinate first cell of ship
+     * @param {Boolean} isVertical
+     * @param {Number} shipLength ship size
      * @returns {Boolean}
      */
     isShipsPlacedAround: function(xCoordinate, yCoordinate, isVertical, shipLength) {
@@ -209,14 +209,14 @@ BattleShip.Field.prototype = {
 
 
     /**
-     * Производит выстрел по указанной позиции и в ответ вызывает соответствующие колбэки
+     * Make shot and call callback
      * @param {Array} shotPosition
      */
     makeShot: function(shotPosition) {
         var cell = this.getCellByPosition( shotPosition );
-        // если ранее по ячейке не стреляли
+        // if not fired
         if ( !cell.isFired ) {
-            // делаем ячейку подбитой
+            // set cell fired
             this.setCellFired( shotPosition );
 
             var shotStatus = this.getShotStatus(shotPosition);
@@ -245,15 +245,15 @@ BattleShip.Field.prototype = {
     },
 
     /**
-     * Получение информации об итоге выстрела (нанес урон / потопил корабль / выйграл игру)
-     * @param {Array} shotPosition позиция выстрела
+     * Get shot status
+     * @param {Array} shotPosition
      * @returns {Null}
      */
     getShotStatus: function(shotPosition) {
         var result = null
           , ship = this.getShipByPosition( shotPosition );
 
-        // выполняем только если есть корабль на данной позиции
+        // is ship in this position?
         if ( ship ) {
             if ( ship.isDead() ) {
                 result = BattleShip.ShotStatus.KILLED;
@@ -267,7 +267,7 @@ BattleShip.Field.prototype = {
     },
 
     /**
-     * Проверка на проигрыш игры
+     * Is player lost?
      * @returns {boolean}
      */
     playerHasLost: function() {
@@ -283,8 +283,8 @@ BattleShip.Field.prototype = {
     },
 
     /**
-     * Устанавливает ячейку подбитой
-     * @param {BattleShip.Position} pos позиция ячейки
+     * Set cell fired
+     * @param {BattleShip.Position} cell position
      */
     setCellFired: function(pos) {
         var cell = this.getCellByPosition( pos );
@@ -294,8 +294,8 @@ BattleShip.Field.prototype = {
     },
 
     /**
-     * Устанавливает окружающие ячейки корабля подбитыми
-     * @param {Array} shipPositions ячейки корабля
+     * Set arround cells fired
+     * @param {Array} shipPositions ship cells
      */
     setAroundCellsFired: function(shipPositions) {
         for ( var i = 0; i < shipPositions.length; i++ ) {
@@ -311,8 +311,8 @@ BattleShip.Field.prototype = {
     },
 
     /**
-     * Возвращает корабль котор. находится на переданной позиции
-     * @param {BattleShip.Position} pos позиция корабля
+     * Get ship by position
+     * @param {BattleShip.Position}
      * @returns {BattleShip.Ship}
      */
     getShipByPosition: function(pos) {
@@ -321,8 +321,8 @@ BattleShip.Field.prototype = {
     },
 
     /**
-     * Возвращает ячейку по переданной позиции
-     * @param {BattleShip.Position} pos позиция
+     * Get cell by position
+     * @param {BattleShip.Position}
      * @returns {BattleShip.Cell}
      */
     getCellByPosition: function(pos) {

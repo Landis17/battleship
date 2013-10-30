@@ -1,11 +1,11 @@
 'use strict';
 /**
- * Объект игры Морской бой
- * @param {jQuery obj} humanContainer Контейнер для отображения поля человека
- * @param {jQuery obj} botContainer Контейнер для отображения поля компьютера
- * @param {jQuery obj} gameStatusContainer Контейнер для отображения статуса игры
- * @param {Number} arenaWidth ширина поля
- * @param {Number} arenaHeight высота поля
+ * Game constructor
+ * @param {jQuery obj} humanContainer
+ * @param {jQuery obj} botContainer
+ * @param {jQuery obj} gameStatusContainer
+ * @param {Number} arenaWidth
+ * @param {Number} arenaHeight
  */
 BattleShip.Game = function( humanContainer, botContainer, gameStatusContainer, arenaWidth, arenaHeight ) {
 
@@ -16,19 +16,19 @@ BattleShip.Game = function( humanContainer, botContainer, gameStatusContainer, a
     this.fieldHeight = arenaHeight;
 
     /**
-     * Поле человека
+     * Human field
      * @type {BattleShip.Field}
      */
     this.humanField;
 
     /**
-     * Поле компьютера
+     * Bot field
      * @type {BattleShip.Field}
      */
     this.botField;
 
     /**
-     * Позиции на поле по которым стреляем компьютер
+     * Shoting position for bot
      * @type {Array}
      */
     this.botShootingPositions = [];
@@ -36,12 +36,12 @@ BattleShip.Game = function( humanContainer, botContainer, gameStatusContainer, a
 }
 
 /**
- * Методы для объекта игры
+ * Game methods
  */
 BattleShip.Game.prototype = {
 
     /**
-     * Старт
+     * Start
      */
     start: function() {
         this.initHumanField();
@@ -52,7 +52,7 @@ BattleShip.Game.prototype = {
 
 
     /**
-     * Инициализация массива позиций по которым будет стрелять компьютер
+     * Init shoting position for bot
      */
     initBotShootingPositions: function() {
         for ( var i = 0; i < this.fieldWidth; i++ ) {
@@ -60,7 +60,7 @@ BattleShip.Game.prototype = {
                 this.botShootingPositions.push( new BattleShip.Position( i, j ) );
             }
         }
-        shuffleArray( this.botShootingPositions ) ;
+        shuffleArray( this.botShootingPositions );
 
         // http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array-in-javascript
         function shuffleArray(o) { 
@@ -70,7 +70,7 @@ BattleShip.Game.prototype = {
     },
 
     /**
-     * Инициализация поля компьютера
+     * Init bot field
      */
     initBotField: function() {
 
@@ -114,7 +114,7 @@ BattleShip.Game.prototype = {
     },
 
     /**
-     * Инициализация поля человека
+     * Init human field
      */
     initHumanField: function() {
 
@@ -129,7 +129,6 @@ BattleShip.Game.prototype = {
         var onShipDamagedHandler = function(pos) {
             self.markShipDamaged( table, pos );
             self.botAroundAttack( pos );
-            // self.botRandomAttack();
         }
 
         var onShipDiedHandler = function(shipPositions) {
@@ -152,7 +151,7 @@ BattleShip.Game.prototype = {
             , this.fieldHeight
             , this.fieldWidth );
 
-        // отображаем все корабли человека
+        // show ships on human field
         for ( var i = 0; i < this.humanField.ships.length; i++ ) {
             var shipPositions = this.humanField.ships[i].getPositions();
             for ( var j = 0; j < shipPositions.length; j++ ) {
@@ -163,9 +162,9 @@ BattleShip.Game.prototype = {
     },
 
     /**
-     * Инициализация поля игры
-     * @param {jQuery obj} container родительский контейнер
-     * @returns {jQuery obj} table поле игры
+     * Create game table
+     * @param {jQuery obj} container for game field
+     * @returns {jQuery obj} game table
      */
     createTable: function(container) {
         var table = $('<table></table>').addClass('field');
@@ -183,10 +182,8 @@ BattleShip.Game.prototype = {
 
 
     /**
-     * Атака компьютера
-     * Происходит по таймауту для создания иллюзии обдумывания
-     * Если корабль подбит, бьет соседние ячейки
-     * @param {BattleShip.Positions} pos подбитая ячейка
+     * Bot random attack
+     * Set timeout for thinking
      */
     botRandomAttack: function() {
         var self = this;
@@ -199,10 +196,9 @@ BattleShip.Game.prototype = {
     },
 
     /**
-     * Атака компьютера
-     * Происходит по таймауту для создания иллюзии обдумывания
-     * Если корабль подбит, бьет соседние ячейки
-     * @param {BattleShip.Positions} pos подбитая ячейка
+     * Bot 'smart' attack
+     * Shot arround cells
+     * @param {BattleShip.Positions} pos fired cell
      */
     botAroundAttack: function(pos) {
         var self = this
@@ -248,18 +244,18 @@ BattleShip.Game.prototype = {
     },
 
     /**
-     * Закрашивает клетку раненого корабля
+     * Color damaged cell
      * @param {jQuery obj} table
-     * @param {BattleShip.Position} pos позиция клетки
+     * @param {BattleShip.Position} pos cell position
      */
     markShipDamaged: function(table, pos) {
         table.find('tr').eq(pos.y).find('td').eq(pos.x).removeClass('fired_cell').addClass('damaged_ship');
     },
 
     /**
-     * Закрашивает клетки потопленного корабля
-     * @param {jQuery obj} table элемент таблицы
-     * @param {BattleShip.Position} shipPositions позиции на которых был установлен корабль
+     * Color died cell
+     * @param {jQuery obj} table
+     * @param {BattleShip.Position} shipPositions
      */
     markShipDied: function(table, shipPositions) {
         for ( var i = 0; i < shipPositions.length; i++ ) {
@@ -268,9 +264,9 @@ BattleShip.Game.prototype = {
     },
 
     /**
-     * Закрашивает клетки вокруг потопленного корабля
-     * @param {jQuery obj} table элемент таблицы
-     * @param {BattleShip.Position} shipPositions позиции на которых был установлен корабль
+     * Color arround cells from damaged cell
+     * @param {jQuery obj} table
+     * @param {BattleShip.Position} shipPositions
      */
     markAroundShipDied: function(table, shipPositions) {
         for ( var i = 0; i < shipPositions.length; i++ ) {

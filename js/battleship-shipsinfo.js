@@ -1,26 +1,26 @@
 'use strict';
 /**
- * Информация о караблях (длина корабля / количество кораблей)
+ * Ship info (ship size / ship count)
  */
 BattleShip.ShipsInfo = {
 
     /**
-     * Четырехпалубник
+     * 4
      */
     FOUR_DECKER : {LENGTH: 4, COUNT: 1},
 
     /**
-     * Трехпалубник
+     * 3
      */
     THREE_DECKER : {LENGTH: 3, COUNT: 2},
 
     /**
-     * Двухпалубник
+     * 2
      */
     TWO_DECKER : {LENGTH: 2, COUNT: 3},
 
     /**
-     * Однопалубник
+     * 1
      */
     SINGLE_DECKER : {LENGTH: 1, COUNT: 4}
 }

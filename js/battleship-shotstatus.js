@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Статус выстрела
+ * Shot Status
  * @type {{DAMAGED: string, KILLED: string}}
  */
 BattleShip.ShotStatus = {

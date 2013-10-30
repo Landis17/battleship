@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Глобальное пространство имен
+ * Global Namespace
  */
 var BattleShip = {};
 

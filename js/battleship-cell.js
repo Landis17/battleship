@@ -1,8 +1,8 @@
 'use strict';
 /**
- * Ячейка в поле
- * @param pos позиция ячейки
- * @param ship корабль, который установлен на ячейку
+ * Cell constructor
+ * @param pos
+ * @param ship in this position
  * @constructor
  */
 BattleShip.Cell = function(pos, ship) {
@@ -10,7 +10,7 @@ BattleShip.Cell = function(pos, ship) {
     this.ship = ship;
 
     /**
-     * Был ли произведен выстрел по ячейке
+     * Is cell fired?
      * @type {boolean}
      */
     this.isFired = false;

@@ -1,8 +1,8 @@
 'use strict';
 /**
- * Позиция на поле
- * @param x позиция по оси Х
- * @param y позиция по оси У
+ * Position constructor
+ * @param x position
+ * @param y position
  * @constructor
  */
 BattleShip.Position = function(x, y) {
