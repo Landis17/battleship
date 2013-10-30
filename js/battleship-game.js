@@ -128,8 +128,8 @@ BattleShip.Game.prototype = {
 
         var onShipDamagedHandler = function(pos) {
             self.markShipDamaged( table, pos );
-            // self.botAroundAttack( pos );
-            self.botRandomAttack();
+            self.botAroundAttack( pos );
+            // self.botRandomAttack();
         }
 
         var onShipDiedHandler = function(shipPositions) {
@@ -209,6 +209,7 @@ BattleShip.Game.prototype = {
           , botArroundPositions = []
           , isOdd = function(num) { return num % 2 };
 
+        // select arround cells
         for ( var x = pos.x - 1; x <= pos.x + 1; x++ ) {
             for ( var y = pos.y - 1; y <= pos.y + 1; y++ ) {
                 if ( x >= 0 && y >= 0 ) {
@@ -220,36 +221,29 @@ BattleShip.Game.prototype = {
             }
         }
 
+        /**
+         * select cross possitioned cells from arounded cells
+         * and replace these in botShootingPositions array
+         */ 
         for ( var i = 0, iLen = botArroundPositions.length; i < iLen; i++ ) {
-            var iItem = botArroundPositions[i];
-            if ( isOdd( i ) && !iItem.isFired ) {
+            var arroundItem = botArroundPositions[i];
+            if ( isOdd( i ) && !arroundItem.isFired ) {
                 for ( var j = 0, jLen = self.botShootingPositions.length; j < jLen; j++ ) {
-                    var jItem = self.botShootingPositions[j];
-                    if ( jItem.x == iItem.pos.x && jItem.y == iItem.pos.y ) {
-                        console.log(pos, 'pos');
-                        console.log(botArroundPositions, 'botArroundPositions');
-                        console.log(iItem.pos, 'iItem');
-                        console.log(jItem, 'jItem');
-                        console.log('**************');
+                    var randomItem = self.botShootingPositions[j];
+                    if ( randomItem.x == arroundItem.pos.x && randomItem.y == arroundItem.pos.y ) {
+
+                        this.botShootingPositions.splice( this.botShootingPositions.indexOf( randomItem ), 1 );
+
+                        this.botShootingPositions.push( arroundItem.pos );
                     }
                 }
             }
         }
-        
-        // console.log(pos, 'pos');
-        // console.log(botArroundPositions, 'arround');
-        // console.log(this.botShootingPositions.length, 'shooting');
 
-        // setTimeout(function () {
-        //     var shotPos = botArroundPositions.pop();
-
-        //     self.botShootingPositions.splice( self.botShootingPositions.indexOf( shotPos ), 1 );
-        //     self.humanField.makeShot( shotPos.pos );
-
-        //     console.log(pos, 'pos');
-        //     console.log(shotPos, 'shotPos');
-        //     console.log(self.botShootingPositions.length, 'shooting');            
-        // }, 1000);
+        setTimeout(function () {
+            var shotPos = self.botShootingPositions.pop();
+            self.humanField.makeShot( shotPos );        
+        }, 1000);
 
     },
 
