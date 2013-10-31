@@ -1,20 +1,6 @@
-body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    line-height: 1.428571429;
-    color: #333333;
-    background-color: #ffffff;
-}
-.container {
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-}
 .header {
     width: 100%;
     height: 3em;
-
 }
 .user_info {
     padding: 10px 20px;
@@ -23,11 +9,6 @@ body {
     font-size: 17.5px;
     font-weight: 300;
     line-height: 1.25;
-}
-.arena_container {
-    font-size: 1.1em;
-    width: 80%;
-    margin: 0 auto;
 }
 .game_status {
     text-align: left;
@@ -43,67 +24,14 @@ body {
     font-weight: 200;
     line-height: 1.4;
 }
-.greetings {
-    padding: 30px;
-    margin-bottom: 30px;
-    font-size: 21px;
-    font-weight: 200;
-    line-height: 2.1428571435;
-    color: inherit;
-    background-color: #eeeeee;
-    border-radius: 6px;
-}
-.username {
-    width: 50%;
-    height: 22px;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.428571429;
-    color: #555555;
-    vertical-align: middle;
-    background-color: #ffffff;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-          transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-}
-.username_btn {
-    display: inline-block;
-    padding: 6px 12px;
-    margin-bottom: 0;
-    font-size: 14px;
-    font-weight: normal;
-    line-height: 1.428571429;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    cursor: pointer;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-       -o-user-select: none;
-          user-select: none;
-    color: #333333;
-    background-color: #ffffff;
-    border-color: #cccccc;
-}
-.username_btn:hover,
-.username_btn:focus,
-.username_btn:active {
-    color: #333333;
-    background-color: #ebebeb;
-    border-color: #adadad;
-}
+
 .field td {
     background-size: contain;
     border: solid black 1px;
-    height: 2em;
-    width: 2em;
+    height: 3em;
+    width: 3em;
 }
+.username { font-size: 13px; width: 30%; }
 .fired_cell {
     background-color: #9a9ca3;
 }
@@ -125,4 +53,5 @@ body {
     width:100%;
     background:#eeeeee;
     font-size: 16px;
+    line-height: 5px;
 }

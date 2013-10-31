@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" type="text/css" href="css/style.css" />
 
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap3/css/bootstrap.min.css" />
     <script src="vendor/jquery/jquery-2.0.3.min.js"></script>
 
     <script src="js/battleship.js"></script>
@@ -34,12 +35,12 @@
             </div>
         </div>
     </div>
-    <div class="greetings">
+    <div class="jumbotron">
         <h1>Hello!</h1>
         <p>This is Battle Ship Game. Set your name. Play.</p>
         <form>
             <input type="text" class="username"/>
-            <button type="text" class="username_btn">Play</button>
+            <button type="text" class="btn btn-large btn-primary username_btn">Play</button>
         </form>
     </div>
 </div>
@@ -80,7 +81,7 @@ jQuery(function($) {
             }
             
             $('.user_info').append( userName );
-            $('.greetings').hide(500);
+            $('.jumbotron').hide(500);
             $('.game').show(500);
         }
     }

@@ -78,7 +78,7 @@ BattleShip.Game.prototype = {
           , self = this;
 
         var onShotMissedHandler = function(pos) {
-            $(self.gameStatusContainer).text("Ход противника");
+            $(self.gameStatusContainer).text("Bot turn");
             table.find('tr').eq(pos.y).find('td').eq(pos.x).addClass('fired_cell');
             self.botRandomAttack();
         }
@@ -93,8 +93,8 @@ BattleShip.Game.prototype = {
         }
 
         var onBotLostHandler = function() {
-            $(self.gameStatusContainer).text('Игра окончена. Вы победили');
-            alert( "Вы победили. Игра начнется заново. " );
+            $(self.gameStatusContainer).text('Game over');
+            alert( "You win! Repeat that." );
             location.reload();
         };
 
@@ -122,7 +122,7 @@ BattleShip.Game.prototype = {
           , self = this;
 
         var onShotMissedHandler = function(pos) {
-            $(self.gameStatusContainer).text("Ваш ход");
+            $(self.gameStatusContainer).text("User turn");
             table.find('tr').eq(pos.y).find('td').eq(pos.x).addClass('fired_cell');
         }
 
@@ -138,8 +138,8 @@ BattleShip.Game.prototype = {
         }
 
         var onHumanLostHandler = function() {
-            $(self.gameStatusContainer).text('Игра окончена. Вы проиграли.');
-            alert( "Вы проиграли. Игра начнется заново." );
+            $(self.gameStatusContainer).text('Game over');
+            alert( "You lose. Repeat that." );
             location.reload();
         };
 
