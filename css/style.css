@@ -28,7 +28,7 @@
 .field td {
     background-size: contain;
     border: solid black 1px;
-    height: 3em;
+    height: 2.5em;
     width: 3em;
 }
 .username { font-size: 13px; width: 30%; }
