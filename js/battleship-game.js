@@ -47,7 +47,7 @@ BattleShip.Game.prototype = {
         this.initHumanField();
         this.initBotField();
         this.initBotShootingPositions();
-        $(this.gameStatusContainer).text("Ваш ход");
+        $(this.gameStatusContainer).text("User turn");
     },
 
 
